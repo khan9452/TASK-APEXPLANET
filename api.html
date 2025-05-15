@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>😂 Joke Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #c2e9fb, #a1c4fd);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        
+        .container {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .joke {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            min-height: 100px;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4caf50;
+            color: white;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #43a047;
+        }
+        
+        .spinner {
+            display: none;
+            margin: auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4caf50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .footer {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>😂 Random Joke Generator</h1>
+        <div class="spinner" id="spinner"></div>
+        <div class="joke" id="joke">Click below to get a hilarious joke!</div>
+        <div class="buttons">
+            <button onclick="getJoke()">Get Joke</button>
+            <button onclick="copyJoke()">📋 Copy</button>
+            <button onclick="getJoke()">🔄 Refresh</button>
+        </div>
+        <div class="footer">Powered by <a href="https://official-joke-api.appspot.com/" target="_blank">Official Joke API</a></div>
+    </div>
+
+    <script>
+        const jokeEl = document.getElementById('joke');
+        const spinner = document.getElementById('spinner');
+
+        function getJoke() {
+            jokeEl.innerHTML = '';
+            spinner.style.display = 'block';
+
+            fetch('https://official-joke-api.appspot.com/random_joke')
+                .then(res => res.json())
+                .then(data => {
+                    spinner.style.display = 'none';
+                    jokeEl.innerHTML = `
+            <p><strong>🧠 ${data.setup}</strong></p>
+            <p>🤣 ${data.punchline}</p>
+          `;
+                })
+                .catch(error => {
+                    spinner.style.display = 'none';
+                    jokeEl.innerHTML = `<span style="color:red;">⚠️ Failed to fetch a joke. Please try again.</span>`;
+                    console.error(error);
+                });
+        }
+
+        function copyJoke() {
+            const tempEl = document.createElement("textarea");
+            tempEl.value = jokeEl.textContent;
+            document.body.appendChild(tempEl);
+            tempEl.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempEl);
+            alert("Joke copied to clipboard! 😂");
+        }
+    </script>
+</body>
+
+</html>
