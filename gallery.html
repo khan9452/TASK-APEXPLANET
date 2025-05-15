@@ -1,0 +1,36 @@
+<!-- gallery.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery - CozyCup Café</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>Image Gallery</h1>
+        <input type="text" id="imgUrl" placeholder="Paste Image URL" />
+        <button onclick="addImage()">Add Image</button>
+
+        <div id="gallery" style="margin-top:20px;"></div>
+    </div>
+
+    <script>
+        function addImage() {
+            const url = document.getElementById("imgUrl").value;
+            if (url) {
+                const img = document.createElement("img");
+                img.src = url;
+                img.style.width = "100%";
+                img.style.marginTop = "10px";
+                document.getElementById("gallery").appendChild(img);
+                document.getElementById("imgUrl").value = "";
+            }
+        }
+    </script>
+</body>
+
+</html>
